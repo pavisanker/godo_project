@@ -1,5 +1,7 @@
 package com.GoDo.godo.user_pack.otp;
 
+import com.GoDo.godo.user_pack.profile.ProfileModel;
+import com.GoDo.godo.user_pack.profile.ProfileRepo;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
@@ -16,12 +18,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class OtpService {
 
     @Autowired
     private OtpRepo otpRepo;
+
+    @Autowired
+    private ProfileRepo profileRepo;
 
     @Value("${otp.api.key}")
     private String API_KEY;
@@ -35,11 +41,16 @@ public class OtpService {
     public String phoneNumber;
     public Boolean isNewUser = false;
 
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\+91[6-9]\\d{9}$");
+
+
     // Registers the user and sends OTP via SMS
     public ResponseEntity<?> registerUser(OtpModel otpModel) {
 
         try {
             phoneNumber = otpModel.getPhoneNumber();
+            phoneNumber = ensureCountryCode(phoneNumber);
+
 
             // Check if user already exists
             Optional<OtpModel> optionalOtpModel = otpRepo.findByPhoneNumber(phoneNumber);
@@ -47,7 +58,6 @@ public class OtpService {
                 // Update existing user
                 otpModel = optionalOtpModel.get();
                 otpModel.setDateUpdated(LocalDateTime.now());
-                isNewUser = false;
             } else {
                 // Create new user entry
                 isNewUser = true;
@@ -100,8 +110,12 @@ public class OtpService {
         try {
             String sessionId = null;
             Optional<OtpModel> optionalOtpModel = otpRepo.findByPhoneNumber(phoneNumber);
+            Optional<ProfileModel> optionalProfileModel = profileRepo.findById(phoneNumber);
+
             if(optionalOtpModel.isPresent()){
                 sessionId = optionalOtpModel.get().getSessionId();
+                isNewUser = optionalProfileModel.isEmpty();
+
             }
 
             if (session.isEmpty()&&!session.equals(sessionId)) {
@@ -125,5 +139,22 @@ public class OtpService {
         } catch (Exception e) {
             return new ResponseEntity<>("Error verifying OTP: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public String ensureCountryCode(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+            throw new IllegalArgumentException("Phone number cannot be empty");
+        }
+
+        // Trim spaces and remove unwanted "+91" or "91" prefix
+        String cleaned = phoneNumber.trim().replaceAll("^\\+?91?", "").replaceAll("\\s+", "");
+
+        // Ensure exactly 10 digits and starts with 6-9
+        if (!cleaned.matches("^[6-9]\\d{9}$")) {
+            throw new IllegalArgumentException("Invalid phone number format: Must be 10-digit valid Indian number starting with 6-9.");
+        }
+
+        // Add "+91" prefix
+        return "+91" + cleaned;
     }
 }

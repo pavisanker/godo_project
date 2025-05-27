@@ -23,6 +23,17 @@ public class AdminController {
     @Autowired
     private ProfileService profileService;
 
+    @GetMapping("/getUsers")
+    public ResponseEntity<?> getUsers() {
+        try {
+            return adminService.getUsers(); // Corrected method call
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider replacing with a logger
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Something went wrong!");
+        }
+    }
+
     @GetMapping("/getVehicles")
     public ResponseEntity<?> getVehicles() {
         try {
@@ -34,5 +45,58 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/getDrives")
+    public ResponseEntity<?> getDrives() {
+        try {
+            return adminService.getDrives(); // Corrected method call
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider replacing with a logger
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Something went wrong!");
+        }
+    }
+
+    @GetMapping("/getHistory")
+    public ResponseEntity<?> getHistory() {
+        try {
+            return adminService.getHistory(); // Corrected method call
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider replacing with a logger
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Something went wrong!");
+        }
+    }
+
+    @GetMapping("/getVehicleCount")
+    public ResponseEntity<?> getVehicleCount() {
+        try {
+            return adminService.getVehicleCount(); // Corrected method call
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider replacing with a logger
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Something went wrong!");
+        }
+    }
+
+    @GetMapping("/getUserCount")
+    public ResponseEntity<?> getUserCount() {
+        try {
+            return adminService.getUserCount(); // Corrected method call
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider replacing with a logger
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Something went wrong!");
+        }
+    }
+    @GetMapping("/getDriveCount")
+    public ResponseEntity<?> getDriveCount() {
+        try {
+            return adminService.getDriveCount(); // Corrected method call
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider replacing with a logger
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Something went wrong!");
+        }
+    }
 
 }

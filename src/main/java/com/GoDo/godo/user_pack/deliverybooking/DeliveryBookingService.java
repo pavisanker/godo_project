@@ -74,6 +74,7 @@ public class DeliveryBookingService {
                 }
                 else{
                     deliveryBookingModel.setUserId(userId);
+                    deliveryBookingModel.setPhoneNumber(phoneNumber);
                     String start = deliveryBookingModel.getStart();
                     String destination = deliveryBookingModel.getDestination();
 

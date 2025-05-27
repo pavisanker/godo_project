@@ -1,6 +1,6 @@
 package com.GoDo.godo.user_pack.profile;
 
-import com.GoDo.godo.utilities.CustomIdGenerator;
+import com.GoDo.godo.utilities_pack.CustomIdGenerator;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,8 +20,7 @@ public class VehicleModel {
     private String phoneNumber;
 
     @Column(name = "vehicleType")
-    @Enumerated(EnumType.STRING)
-    private VehicleModel.Vehicle vehicleType;
+    private String vehicleType;
 
     @Column(name = "vehicleName")
     private String vehicleName;
@@ -48,9 +47,7 @@ public class VehicleModel {
             this.vehicleId = CustomIdGenerator.generateCustomId();
         }
     }
-    public enum Vehicle {
-        Bike, Car, Heavy;
-    }
+
 
     public String getVehicleId() {
         return vehicleId;
@@ -76,11 +73,11 @@ public class VehicleModel {
         this.phoneNumber = phoneNumber;
     }
 
-    public Vehicle getVehicleType() {
+    public String getVehicleType() {
         return vehicleType;
     }
 
-    public void setVehicleType(Vehicle vehicleType) {
+    public void setVehicleType(String vehicleType) {
         this.vehicleType = vehicleType;
     }
 

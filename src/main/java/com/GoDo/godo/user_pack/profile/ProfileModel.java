@@ -25,8 +25,7 @@ public class ProfileModel {
     private Integer age;
 
     @Column(name = "gender")
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private String gender;
 
     @Column(name = "email")
     private String email;
@@ -50,9 +49,6 @@ public class ProfileModel {
     @Column(name = "lastUpdate")
     private LocalDateTime lastUpdate = LocalDateTime.now();
 
-    public enum Gender {
-        Male, Female, Transgender;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -86,11 +82,11 @@ public class ProfileModel {
         this.age = age;
     }
 
-    public Gender getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

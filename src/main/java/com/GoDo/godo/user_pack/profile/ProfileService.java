@@ -94,28 +94,66 @@ public class ProfileService {
     }
 
     //viewProfile
-    public ResponseEntity<?> viewProfile(String session){
+//    public ResponseEntity<?> viewProfile(String session){
+//
+//        //Automatic sessionId
+//        String sessionId = null;
+//        Optional<OtpModel> optionalOtpModel = otpRepo.findBySessionId(session);
+//        if(optionalOtpModel.isPresent()){
+//            phoneNumber = optionalOtpModel.get().getPhoneNumber();
+//            sessionId = optionalOtpModel.get().getSessionId();
+//        }
+//        if(session.equals(sessionId)){
+//
+//            Optional<ProfileModel> profileModelOptional = profileRepo.findById(phoneNumber);
+//            if (profileModelOptional.isPresent()) {
+//                ProfileModel profileModel = profileModelOptional.get();
+//                return new ResponseEntity<>(profileModel, HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
+//            }
+//        }
+//        return new ResponseEntity<>("No Profile",HttpStatus.NOT_FOUND);
+//
+//    }
 
-        //Automatic sessionId
-        String sessionId = null;
+    public ResponseEntity<?> viewProfile(String session) {
         Optional<OtpModel> optionalOtpModel = otpRepo.findBySessionId(session);
-        if(optionalOtpModel.isPresent()){
-            phoneNumber = optionalOtpModel.get().getPhoneNumber();
-            sessionId = optionalOtpModel.get().getSessionId();
-        }
-        if(session.equals(sessionId)){
 
-            Optional<ProfileModel> profileModelOptional = profileRepo.findById(phoneNumber);
-            if (profileModelOptional.isPresent()) {
-                ProfileModel profileModel = profileModelOptional.get();
-                return new ResponseEntity<>(profileModel, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
+        if (optionalOtpModel.isPresent()) {
+            OtpModel otp = optionalOtpModel.get();
+            String phoneNumber = otp.getPhoneNumber();
+            String sessionId = otp.getSessionId();
+
+            if (session.equals(sessionId)) {
+                Optional<ProfileModel> profileModelOptional = profileRepo.findById(phoneNumber);
+
+                if (profileModelOptional.isPresent()) {
+                    ProfileModel profile = profileModelOptional.get();
+
+                    // Convert to DTO
+                    ProfileDTO dto = new ProfileDTO();
+                    dto.setPhoneNumber(profile.getPhoneNumber());
+                    dto.setName(profile.getName());
+                    dto.setAddress(profile.getAddress());
+                    dto.setAge(profile.getAge());
+                    dto.setGender(profile.getGender());
+                    dto.setEmail(profile.getEmail());
+                    dto.setDrivingLicense(profile.getDrivingLicense());
+                    dto.setAadhar(profile.getAadhar());
+                    dto.setLastUpdate(profile.getLastUpdate());
+                    dto.setUserId(otp.getUserId()); // from OtpModel
+
+                    return new ResponseEntity<>(dto, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
+                }
             }
         }
-        return new ResponseEntity<>("No Profile",HttpStatus.NOT_FOUND);
 
+        return new ResponseEntity<>("No Profile", HttpStatus.NOT_FOUND);
     }
+
 
     public ResponseEntity<?> updateProfile(ProfileModel profileModel,String session){
 

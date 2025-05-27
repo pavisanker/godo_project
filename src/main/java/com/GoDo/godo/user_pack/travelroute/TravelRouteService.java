@@ -138,9 +138,9 @@ public class TravelRouteService {
         // Convert passengers to response format with user lookup (name + phone)
         List<Map<String, String>> passengerList = passengers.stream()
                 .map(p -> {
-                    return otpRepo.findById(p.getUserId())
+                    return profileRepo.findById(p.getPhoneNumber())
                             .map(user -> Map.of(
-                                    "name", user.getUserId(),
+                                    "name", user.getName(),
                                     "phone", user.getPhoneNumber(),
                                     "passengerCount",p.getPassengerCount().toString()
                             ))
@@ -155,9 +155,9 @@ public class TravelRouteService {
         // Convert deliveries to response format with user lookup (receiver name + phone)
         List<Map<String, String>> deliveryList = deliveries.stream()
                 .map(d -> {
-                    return otpRepo.findById(d.getUserId())
+                    return profileRepo.findById(d.getPhoneNumber())
                             .map(user -> Map.of(
-                                    "receiverName", user.getUserId(),
+                                    "receiverName", user.getName(),
                                     "phone", user.getPhoneNumber(),
                                     "weight",d.getWeight().toString()
                             ))

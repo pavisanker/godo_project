@@ -18,6 +18,9 @@ public class TravelBookingModel {
     @Column(name = "userId", nullable = false)
     private String userId;
 
+    @Column(name = "phoneNumber", nullable = false)
+    private String phoneNumber;
+
     @Column(name = "start",nullable = false)
     private String start;
 
@@ -67,6 +70,14 @@ public class TravelBookingModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getStart() {

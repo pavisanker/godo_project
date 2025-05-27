@@ -1,4 +1,4 @@
-package com.GoDo.godo.utilities;
+package com.GoDo.godo.utilities_pack;
 
 import java.util.Random;
 

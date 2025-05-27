@@ -1,6 +1,6 @@
 package com.GoDo.godo.user_pack.otp;
 
-import com.GoDo.godo.utilities.CustomIdGenerator;
+import com.GoDo.godo.utilities_pack.CustomIdGenerator;
 import jakarta.persistence.*;
 import lombok.Data;
 

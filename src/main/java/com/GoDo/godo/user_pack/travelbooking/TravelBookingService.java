@@ -68,6 +68,7 @@ public class TravelBookingService {
                 }
                 else{
                     travelBookingModel.setUserId(userId);
+                    travelBookingModel.setPhoneNumber(phoneNumber);
                     String start = travelBookingModel.getStart();
                     String destination = travelBookingModel.getDestination();
 

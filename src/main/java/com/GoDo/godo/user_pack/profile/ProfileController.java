@@ -54,7 +54,7 @@ public class ProfileController {
     @PutMapping(path = "/updateProfile")
     public ResponseEntity<?> updateProfile(@RequestBody ProfileModel profileModel, @RequestParam String session){
         try{
-            return (profileService.createProfile(profileModel,session));
+            return (profileService.updateProfile(profileModel,session));
         }catch (Exception e){
             e.printStackTrace();
         }
