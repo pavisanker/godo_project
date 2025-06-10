@@ -17,7 +17,7 @@ public class IdService {
     private VehicleStatusRepo vehicleStatusRepo;
 
     @Autowired
-    private DeliveryStatusRepo deliveryStatusRepo;
+    private StatusRepo statusRepo;
 
     @Autowired
     private VehicleTypeRepo vehicleTypeRepo;
@@ -67,24 +67,24 @@ public class IdService {
                 return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
             }
     }
-    public ResponseEntity<?> addDeliveryStatus(DeliveryStatusModel deliveryStatusModel){
+    public ResponseEntity<?> addStatus(StatusModel statusModel){
 
         try{
-            deliveryStatusModel.setStatusId(deliveryStatusModel.getStatusId());
-            deliveryStatusModel.setStatusName(deliveryStatusModel.getStatusName());
+            statusModel.setStatusId(statusModel.getStatusId());
+            statusModel.setStatusName(statusModel.getStatusName());
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        deliveryStatusRepo.save(deliveryStatusModel);
-        return new ResponseEntity<>(deliveryStatusModel, HttpStatus.OK);
+        statusRepo.save(statusModel);
+        return new ResponseEntity<>(statusModel, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> viewDeliveryStatus(){
+    public ResponseEntity<?> viewStatus(){
 
-            List<DeliveryStatusModel> deliveryStatusModelList = deliveryStatusRepo.findAll();
-            if (!deliveryStatusModelList.isEmpty()) {
-                return new ResponseEntity<>(deliveryStatusModelList, HttpStatus.OK);
+            List<StatusModel> statusModelList = statusRepo.findAll();
+            if (!statusModelList.isEmpty()) {
+                return new ResponseEntity<>(statusModelList, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
             }

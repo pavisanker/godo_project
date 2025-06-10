@@ -3,6 +3,8 @@ package com.GoDo.godo.admin_pack;
 import com.GoDo.godo.user_pack.otp.OtpModel;
 import com.GoDo.godo.user_pack.otp.OtpRepo;
 import com.GoDo.godo.user_pack.profile.*;
+import com.GoDo.godo.user_pack.travelbooking.TravelBookingModel;
+import com.GoDo.godo.user_pack.travelbooking.TravelBookingRepo;
 import com.GoDo.godo.user_pack.travelhistory.TravelHistoryModel;
 import com.GoDo.godo.user_pack.travelhistory.TravelHistoryRepo;
 import com.GoDo.godo.user_pack.travelroute.TravelRouteModel;
@@ -36,6 +38,9 @@ public class AdminService {
 
     @Autowired
     private TravelRouteRepo travelRouteRepo;
+
+    @Autowired
+    private TravelBookingRepo travelBookingRepo;
 
 
     public ResponseEntity<?> getVehicles() {
@@ -112,6 +117,13 @@ public class AdminService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
         return ResponseEntity.ok(drives);
+    }
+    public ResponseEntity<?> getRides() {
+        List<TravelBookingModel> rides = travelBookingRepo.findAll();
+        if (rides.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+        return ResponseEntity.ok(rides);
     }
 
     public ResponseEntity<?> getDriveCount() {

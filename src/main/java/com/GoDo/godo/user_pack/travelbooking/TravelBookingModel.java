@@ -12,11 +12,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Table(name = "godo_travel_booking")
 public class TravelBookingModel {
     @Id
-    @Column(name = "bookingId")
+    @Column(name = "bookingId", unique = true)
     private String bookingId;
 
     @Column(name = "userId", nullable = false)
     private String userId;
+
+    @Column(name = "ownerId", nullable = false)
+    private String ownerId;
 
     @Column(name = "phoneNumber", nullable = false)
     private String phoneNumber;
@@ -40,7 +43,19 @@ public class TravelBookingModel {
     private Integer passengerCount;
 
     @Column(name = "status",nullable = false)
-    private String status = "Pending";
+    private Integer status = 1;
+
+    @Column(name = "paymentStatus",nullable = false)
+    private Integer paymentStatus = 1;
+
+    @Column(name = "paymentId")
+    private String paymentId;
+
+    @Column(name = "distance",nullable = false)
+    private Long distance;
+
+    @Column(name = "amount",nullable = false)
+    private double amount;
 
 
     private static final AtomicInteger COUNTER = new AtomicInteger(1);
@@ -70,6 +85,14 @@ public class TravelBookingModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getPhoneNumber() {
@@ -128,12 +151,44 @@ public class TravelBookingModel {
         this.passengerCount = passengerCount;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(Integer paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public Long getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Long distance) {
+        this.distance = distance;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 }
 

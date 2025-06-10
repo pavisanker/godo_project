@@ -64,6 +64,16 @@ public class TravelRouteController {
         return ResponseEntity.ok(bookingDetails);
     }
 
+    @PutMapping("/updateStatus/{routeId}")
+    public ResponseEntity<?> updateStatus( @PathVariable String routeId) {
+        try{
+            return travelRouteService.updateStatus(routeId);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Something went wrong!",HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 
 }

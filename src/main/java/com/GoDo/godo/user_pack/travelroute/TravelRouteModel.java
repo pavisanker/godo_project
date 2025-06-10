@@ -44,13 +44,25 @@ public class TravelRouteModel {
     private LocalDateTime boardingTime ;
 
     @Column(name = "status",nullable = false)
-    private String status;
+    private Integer status;
 
     @Column(name = "capacity",nullable = false)
     private Integer capacity;
 
     @Column(name = "totalWeight")
     private  Integer totalWeight;
+
+    @Column(name = "paymentStatus",nullable = false)
+    private Integer paymentStatus = 1;
+
+    @Column(name = "paymentId")
+    private String paymentId;
+
+    @Column(name = "distance",nullable = false)
+    private Long distance;
+
+    @Column(name = "amount",nullable = false)
+    private double amount;
 
 
     private static final AtomicInteger COUNTER = new AtomicInteger(1);
@@ -145,11 +157,11 @@ public class TravelRouteModel {
         this.boardingTime = boardingTime;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -167,5 +179,37 @@ public class TravelRouteModel {
 
     public void setTotalWeight(Integer totalWeight) {
         this.totalWeight = totalWeight;
+    }
+
+    public Integer getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(Integer paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public Long getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Long distance) {
+        this.distance = distance;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 }

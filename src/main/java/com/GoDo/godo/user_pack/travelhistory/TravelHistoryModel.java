@@ -42,13 +42,22 @@ public class TravelHistoryModel {
     private LocalDateTime boardingTime ;
 
     @Column(name = "status",nullable = false)
-    private String status;
+    private Integer status;
 
     @Column(name = "customerId",nullable = false)
     private String customerId;
 
     @Column(name = "deliveryCustomerId")
     private String deliveryCustomerId;
+
+    @Column(name = "paymentId")
+    private String paymentId;
+
+    @Column(name = "distance",nullable = false)
+    private Long distance;
+
+    @Column(name = "amount",nullable = false)
+    private double amount;
 
     public String getTravelId() {
         return travelId;
@@ -123,11 +132,11 @@ public class TravelHistoryModel {
         this.boardingTime = boardingTime;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -145,5 +154,29 @@ public class TravelHistoryModel {
 
     public void setDeliveryCustomerId(String deliveryCustomerId) {
         this.deliveryCustomerId = deliveryCustomerId;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public Long getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Long distance) {
+        this.distance = distance;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 }

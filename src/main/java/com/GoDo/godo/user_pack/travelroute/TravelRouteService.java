@@ -10,6 +10,7 @@ import com.GoDo.godo.user_pack.profile.VehicleModel;
 import com.GoDo.godo.user_pack.profile.VehicleRepo;
 import com.GoDo.godo.user_pack.travelbooking.TravelBookingModel;
 import com.GoDo.godo.user_pack.travelbooking.TravelBookingRepo;
+import com.GoDo.godo.utilities_pack.FareCalculator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -70,13 +71,34 @@ public class TravelRouteService {
             travelRouteModel.setBooked(0);
             travelRouteModel.setDelivery(0);
             travelRouteModel.setTotalWeight(0);
-            travelRouteModel.setStatus("Pending");
+            travelRouteModel.setStatus(1);
             travelRouteModel.setStart(travelRouteModel.getStart());
             travelRouteModel.setDestination(travelRouteModel.getDestination());
             travelRouteModel.setBoardingTime(travelRouteModel.getBoardingTime());
+//            Long distance = travelRouteModel.getDistance()*1000;
+            travelRouteModel.setDistance(travelRouteModel.getDistance());
+
+
+
 
             Optional<VehicleModel> vehicleModelOptional = vehicleRepo.findById(vehicleId);
             vehicleModelOptional.ifPresent(vehicleModel -> travelRouteModel.setCapacity(vehicleModel.getCapacity()));
+
+            long distance = travelRouteModel.getDistance();
+            if(vehicleModelOptional.isPresent()){
+                int capacity = vehicleModelOptional.get().getCapacity();
+                long calculatedAmount = FareCalculator.calculateAmount(distance, capacity);
+
+                travelRouteModel.setAmount(calculatedAmount);
+            }
+            else{
+                int capacity = 10;
+                long calculatedAmount = FareCalculator.calculateAmount(distance, capacity);
+
+                travelRouteModel.setAmount(calculatedAmount);
+
+            }
+
 
         }
 
@@ -178,6 +200,20 @@ public class TravelRouteService {
     }
 
 
+    public ResponseEntity<?> updateStatus(String routeId) {
+        Optional<TravelRouteModel> optionalTravelRouteModel = travelRouteRepo.findById(routeId);
+
+        if (optionalTravelRouteModel.isPresent()) {
+            TravelRouteModel route = optionalTravelRouteModel.get();
+            route.setStatus(3); // Assuming status is an integer field
+            route.setVacancy(0);
+            
+            travelRouteRepo.save(route);
+            return ResponseEntity.ok("Status updated successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Route not found.");
+        }
+    }
 }
 
 

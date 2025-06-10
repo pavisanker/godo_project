@@ -3,6 +3,10 @@ package com.GoDo.godo.user_pack.travelbooking;
 import com.GoDo.godo.user_pack.otp.OtpModel;
 import com.GoDo.godo.user_pack.otp.OtpRepo;
 import com.GoDo.godo.user_pack.otp.OtpService;
+import com.GoDo.godo.user_pack.profile.ProfileModel;
+import com.GoDo.godo.user_pack.profile.ProfileRepo;
+import com.GoDo.godo.user_pack.profile.VehicleModel;
+import com.GoDo.godo.user_pack.profile.VehicleRepo;
 import com.GoDo.godo.user_pack.travelroute.TravelRouteModel;
 import com.GoDo.godo.user_pack.travelroute.TravelRouteRepo;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -31,6 +36,12 @@ public class TravelBookingService {
 
     @Autowired
     private OtpService otpService;
+
+    @Autowired
+    private ProfileRepo profileRepo;
+
+    @Autowired
+    private VehicleRepo vehicleRepo;
 
     public String userId;
     public String phoneNumber;
@@ -78,13 +89,17 @@ public class TravelBookingService {
                     travelBookingModel.setStart(start);
                     travelBookingModel.setDestination(destination);
                     travelBookingModel.setPassengerCount(travelBookingModel.getPassengerCount());
-                    travelBookingModel.setStatus("Booked");
+                    travelBookingModel.setStatus(7);
+                    travelBookingModel.setOwnerId(travelRouteModel.getUserId());
+                    travelBookingModel.setDistance(travelBookingModel.getDistance());
+                    double totalAmount = travelBookingModel.getAmount()*travelBookingModel.getPassengerCount();
+                    travelBookingModel.setAmount(totalAmount);
                 }
                 if(vacancy.equals(travelBookingModel.getPassengerCount())){
-                    travelRouteModel.setStatus("Booked");
+                    travelRouteModel.setStatus(7);
                 }
                 else {
-                    travelRouteModel.setStatus("Progress");
+                    travelRouteModel.setStatus(2);
                 }
 
                 // Update the existing route's vacancy,booked
@@ -179,10 +194,10 @@ public class TravelBookingService {
                 travelRouteModel.setBooked(travelRouteModel.getBooked()-travelBookingModel.getPassengerCount());
 
                 if(travelRouteModel.getBooked().equals(0)){
-                    travelRouteModel.setStatus("Pending");
+                    travelRouteModel.setStatus(1);
                 }
                 else{
-                    travelRouteModel.setStatus("Progress");
+                    travelRouteModel.setStatus(2);
                 }
 
                 // Save the updated route
@@ -195,5 +210,37 @@ public class TravelBookingService {
             throw new EntityNotFoundException("Booking with ID " + bookingId + " not found.");
         }
     }
+
+    public Map<String, String> getDriverDetails(String routeId) {
+        Optional<TravelRouteModel> optionalRoute = travelRouteRepo.findById(routeId);
+
+        if (optionalRoute.isPresent()) {
+            TravelRouteModel route = optionalRoute.get();
+            String phoneNumber = route.getPhoneNumber(); // driver user ID or phone
+            String vehicleId = route.getVehicleId(); // get vehicle ID from route
+
+            // Fetch driver profile
+            Optional<ProfileModel> driverOpt = profileRepo.findById(phoneNumber);
+
+            // Fetch vehicle details
+            Optional<VehicleModel> vehicleOpt = vehicleRepo.findById(vehicleId);
+
+            return Map.of(
+                    "name", driverOpt.map(ProfileModel::getName).orElse("Unknown"),
+                    "phone", driverOpt.map(ProfileModel::getPhoneNumber).orElse("N/A"),
+                    "vehicleNumber", vehicleOpt.map(VehicleModel::getRegistrationNumber).orElse("-"),
+                    "vehicleType", vehicleOpt.map(VehicleModel::getVehicleType).orElse("-")
+            );
+        }
+
+        return Map.of(
+                "name", "Unknown",
+                "phone", "N/A",
+                "vehicleNumber", "-",
+                "vehicleType", "-"
+        );
+    }
+
+
 
 }

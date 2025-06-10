@@ -42,8 +42,13 @@ public class DeliveryBookingModel {
         private Integer weight;
 
         @Column(name = "status",nullable = false)
-        private String status = "Pending";
+        private Integer status = 1;
 
+        @Column(name = "paymentStatus",nullable = false)
+        private Integer paymentStatus = 1;
+
+        @Column(name = "paymentId")
+        private String paymentId;
 
         private static final AtomicInteger COUNTER = new AtomicInteger(1);
 
@@ -51,7 +56,7 @@ public class DeliveryBookingModel {
         @PrePersist
         public void generateBookingId() {
             if (this.bookingId == null || this.bookingId.isEmpty()) {
-                // Prefix "BKG", current date (yyyyMMdd), and counter (e.g., BKG-20250127-001)
+                // Prefix "DEL", current date (yyyyMMdd), and counter (e.g., BKG-20250127-001)
                 String datePart = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
                 int sequence = COUNTER.getAndIncrement();
                 this.bookingId = String.format("DEL-%s-%03d", datePart, sequence);
@@ -130,11 +135,27 @@ public class DeliveryBookingModel {
         this.weight = weight;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(Integer paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 }

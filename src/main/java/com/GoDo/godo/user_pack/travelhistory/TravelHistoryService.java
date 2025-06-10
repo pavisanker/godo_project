@@ -75,7 +75,12 @@ public class TravelHistoryService {
                 travelHistoryModel.setVacancy(travelRouteModelOptional.get().getVacancy());
                 travelHistoryModel.setOwnerPhoneNumber(travelRouteModelOptional.get().getPhoneNumber());
                 travelHistoryModel.setVehicleId(travelRouteModelOptional.get().getVehicleId());
-                travelHistoryModel.setStatus("Completed");
+                travelHistoryModel.setStatus(travelRouteModelOptional.get().getStatus());
+                travelHistoryModel.setPaymentId(travelRouteModelOptional.get().getPaymentId());
+                travelHistoryModel.setDistance(travelRouteModelOptional.get().getDistance());
+                travelHistoryModel.setAmount(travelRouteModelOptional.get().getAmount());
+
+
 
                 if (!deliveryBookingModelList.isEmpty()) {
                     String deliveryCustomerIds = deliveryBookingModelList.stream()

@@ -56,21 +56,21 @@ public class IdController {
         return new ResponseEntity<>("Error",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @PostMapping(path = "/addDeliveryStatus")
-    public ResponseEntity<?> addDeliveryStatus(@RequestBody DeliveryStatusModel deliveryStatusModel){
+    @PostMapping(path = "/addStatus")
+    public ResponseEntity<?> addStatus(@RequestBody StatusModel statusModel){
 
         try{
-            return (idService.addDeliveryStatus(deliveryStatusModel));
+            return (idService.addStatus(statusModel));
         }catch (Exception e){
             e.printStackTrace();
         }
         return new ResponseEntity<>("Error!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @GetMapping(path = "/viewDeliveryStatus")
-    public  ResponseEntity<?> viewDeliveryStatus(){
+    @GetMapping(path = "/viewStatus")
+    public  ResponseEntity<?> viewStatus(){
         try{
-            return (idService.viewDeliveryStatus());
+            return (idService.viewStatus());
         }catch (Exception e){
             e.printStackTrace();
         }

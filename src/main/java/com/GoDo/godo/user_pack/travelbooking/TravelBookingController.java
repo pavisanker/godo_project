@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @CrossOrigin(origins = {"http://localhost:8081","http://172.20.4.53:8081/","http://192.168.1.10:8081/"})
 @RestController
 @RequestMapping(path = "/api/godo")
@@ -14,10 +16,10 @@ public class TravelBookingController {
     private TravelBookingService travelBookingService;
 
     @PostMapping(path = "/travelBooking")
-    public ResponseEntity<?> travelBooking(@RequestBody TravelBookingModel travelBookingModel,@RequestParam String session){
-        try{
-            return (travelBookingService.travelBooking(travelBookingModel,session));
-        }catch(Exception e){
+    public ResponseEntity<?> travelBooking(@RequestBody TravelBookingModel travelBookingModel, @RequestParam String session) {
+        try {
+            return (travelBookingService.travelBooking(travelBookingModel, session));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>("Something went wrong!", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -25,10 +27,10 @@ public class TravelBookingController {
     }
 
     @GetMapping(path = "/viewRoutes")
-    public ResponseEntity<?>viewRoutes(@RequestParam String start,@RequestParam String destination, @RequestParam Integer passengerCount){
-        try{
+    public ResponseEntity<?> viewRoutes(@RequestParam String start, @RequestParam String destination, @RequestParam Integer passengerCount) {
+        try {
             return travelBookingService.viewRoutes(start, destination, passengerCount);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -48,22 +50,22 @@ public class TravelBookingController {
 
     @GetMapping("/viewRides")
     public ResponseEntity<?> viewRides(@RequestParam String session) {
-        try{
+        try {
             return (travelBookingService.viewRides(session));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>("Something went wrong!",HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Something went wrong!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/updateRide/{bookingId}")
     public ResponseEntity<?> updateRide(@RequestBody TravelBookingModel travelBookingModel, @PathVariable String bookingId) {
-        try{
-            return travelBookingService.updateRide(travelBookingModel,bookingId);
-        }catch (Exception e){
+        try {
+            return travelBookingService.updateRide(travelBookingModel, bookingId);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>("Something went wrong!",HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Something went wrong!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping("/deleteRide/{bookingId}")
@@ -71,4 +73,12 @@ public class TravelBookingController {
         travelBookingService.deleteRide(bookingId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/details/{routeId}")
+    public ResponseEntity<Map<String, String>> getDriverDetails(@PathVariable String routeId) {
+        Map<String, String> driverDetails = travelBookingService.getDriverDetails(routeId);
+        return ResponseEntity.ok(driverDetails);
+    }
+
+
 }

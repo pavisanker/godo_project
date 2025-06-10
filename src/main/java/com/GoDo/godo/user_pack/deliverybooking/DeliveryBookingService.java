@@ -84,9 +84,9 @@ public class DeliveryBookingService {
                     deliveryBookingModel.setStart(start);
                     deliveryBookingModel.setDestination(destination);
                     deliveryBookingModel.setWeight(deliveryBookingModel.getWeight());
-                    deliveryBookingModel.setStatus("Booked");
+                    deliveryBookingModel.setStatus(7);
                     if (travelRouteModel.getVacancy().equals(travelRouteModel.getCapacity()-1)) {
-                        travelRouteModel.setStatus("Progress");
+                        travelRouteModel.setStatus(2);
                     }
                     travelRouteModel.setDelivery(travelRouteModel.getDelivery()+1);
                     travelRouteModel.setTotalWeight(newWeight+currentWeight);
@@ -176,10 +176,10 @@ public class DeliveryBookingService {
                 travelRouteModel.setDelivery(travelRouteModel.getDelivery()-1);
 
                 if(travelRouteModel.getDelivery().equals(0)){
-                    travelRouteModel.setStatus("Pending");
+                    travelRouteModel.setStatus(1);
                 }
                 else{
-                    travelRouteModel.setStatus("Progress");
+                    travelRouteModel.setStatus(2);
                 }
 
                 // Save the updated route

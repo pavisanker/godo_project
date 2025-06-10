@@ -8,8 +8,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "delivery_status")
-public class DeliveryStatusModel {
+@Table(name = "godo_status")
+public class StatusModel {
 
     @Id
     @Column(name = "statusId", unique = true)

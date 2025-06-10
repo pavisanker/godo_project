@@ -55,6 +55,16 @@ public class AdminController {
                     .body("Something went wrong!");
         }
     }
+    @GetMapping("/getRides")
+    public ResponseEntity<?> getRides() {
+        try {
+            return adminService.getRides(); // Corrected method call
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider replacing with a logger
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Something went wrong!");
+        }
+    }
 
     @GetMapping("/getHistory")
     public ResponseEntity<?> getHistory() {
