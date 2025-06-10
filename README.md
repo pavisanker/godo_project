@@ -1,1 +1,3 @@
-.
+Admin
+username: admin
+password: admin123
