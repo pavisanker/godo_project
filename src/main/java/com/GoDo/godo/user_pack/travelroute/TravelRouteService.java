@@ -202,11 +202,17 @@ public class TravelRouteService {
 
     public ResponseEntity<?> updateStatus(String routeId) {
         Optional<TravelRouteModel> optionalTravelRouteModel = travelRouteRepo.findById(routeId);
+        List<TravelBookingModel> travelBookingModels = travelBookingRepo.findByRouteId(routeId);
 
         if (optionalTravelRouteModel.isPresent()) {
             TravelRouteModel route = optionalTravelRouteModel.get();
             route.setStatus(3); // Assuming status is an integer field
             route.setVacancy(0);
+
+                for (TravelBookingModel bookingModel : travelBookingModels) {
+                    bookingModel.setStatus(3);
+                }
+                travelBookingRepo.saveAll(travelBookingModels);
             
             travelRouteRepo.save(route);
             return ResponseEntity.ok("Status updated successfully.");
