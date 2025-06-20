@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
@@ -66,8 +67,8 @@ public class TravelBookingModel {
         if (this.bookingId == null || this.bookingId.isEmpty()) {
             // Prefix "BKG", current date (yyyyMMdd), and counter (e.g., BKG-20250127-001)
             String datePart = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-            int sequence = COUNTER.getAndIncrement();
-            this.bookingId = String.format("BKG-%s-%03d", datePart, sequence);
+            String uuidPart = UUID.randomUUID().toString().split("-")[0];
+            this.bookingId = String.format("BKG-%s-%s", datePart, uuidPart);
         }
     }
 

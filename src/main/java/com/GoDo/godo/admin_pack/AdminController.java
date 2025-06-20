@@ -109,4 +109,15 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/getBookingCount")
+    public ResponseEntity<?> getBookingCount() {
+        try {
+            return adminService.getBookingCount(); // Corrected method call
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider replacing with a logger
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Something went wrong!");
+        }
+    }
+
 }

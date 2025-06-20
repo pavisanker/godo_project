@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
@@ -72,8 +73,8 @@ public class TravelRouteModel {
     public void generateRouteId() {
         if (this.routeId == null || this.routeId.isEmpty()) {
             String datePart = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-            int sequence = COUNTER.getAndIncrement();
-            this.routeId = String.format("RDL-%s-%03d", datePart, sequence);
+            String uuidPart = UUID.randomUUID().toString().split("-")[0];
+            this.routeId = String.format("RDL-%s-%s", datePart, uuidPart);
         }
     }
 

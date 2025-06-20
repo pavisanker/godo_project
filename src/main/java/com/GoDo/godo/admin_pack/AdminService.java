@@ -133,4 +133,12 @@ public class AdminService {
 
         return ResponseEntity.ok(response);
     }
+
+    public ResponseEntity<?> getBookingCount() {
+        long count = travelBookingRepo.count(); // Directly get the count of rows
+        Map<String, Long> response = new HashMap<>();
+        response.put("count", count);
+
+        return ResponseEntity.ok(response);
+    }
 }
